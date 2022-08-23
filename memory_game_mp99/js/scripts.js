@@ -1,65 +1,63 @@
-const cartas = document.querySelectorAll('.carta-memoria');
+const cards = document.querySelectorAll('.carta-memoria');
 
-let hasFlippedCarta = false;
+let hasFlippedCard = false;
 let lockBoard = false;
 let firstCard, secondCard;
 
-function flipCarta() {
-    if(lockBoard) return;
-    if (this === firstCard) return;
+function flipCard() {
+  if (lockBoard) return;
+  if (this === firstCard) return;
 
-    this.classList.add('flip');
+  this.classList.add('flip');
 
-    if (!hasFlippedCarta) {
-        // first click
-        hasFlippedCarta = true;
-        firstCard = this; 
+  if (!hasFlippedCard) {
+    // first click
+    hasFlippedCard = true;
+    firstCard = this;
 
-        return;
-    }
+    return;
+  }
 
-    // second click
-    secondCard = this;
+  // second click
+  secondCard = this;
 
-    checkForMatch();
+  checkForMatch();
 }
 
 function checkForMatch() {
-    let isMatch = firstCard.dataset.framework === 
-    secondCard.dataset.framework; 
-     
+  let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
 
-    isMatch ? disableCards() : unFlipCards();
+  isMatch ? disableCards() : unflipCards();
 }
 
 function disableCards() {
-    firstCard.removeEventlistener('click', flipCarta);
-    secondCard.removeEventlistener('click', flipCarta);
+  firstCard.removeEventListener('click', flipCard);
+  secondCard.removeEventListener('click', flipCard);
 
-    resetBoard();
+  resetBoard();
 }
 
-function unFlipCards() {
-    lockBoard = true;
+function unflipCards() {
+  lockBoard = true;
 
-    setTimeout(() => {
-        firstCard.classList.remove('flip');
-        secondCard.classList.remove('flip');
+  setTimeout(() => {
+    firstCard.classList.remove('flip');
+    secondCard.classList.remove('flip');
 
-        resetBoard();
-    }, 1500);
+    resetBoard();
+  }, 1500);
 }
 
 function resetBoard() {
-    [hasFlippedCarta, lockBoard] = [false, false];
-    [firstCard, secondCard] = [null, null];
+  [hasFlippedCard, lockBoard] = [false, false];
+  [firstCard, secondCard] = [null, null];
 }
 
 (function shuffle() {
-    cartas.forEach(carta => {
-        let randomPos = Math.floor(Math.random() * 12);
-        carta.style.order = randomPos;
-    });
+  cards.forEach(card => {
+    let randomPos = Math.floor(Math.random() * 12);
+    card.style.order = randomPos;
+  });
 })();
 
-cartas.forEach(carta => carta.addEventListener('click', flipCarta));
+cards.forEach(card => card.addEventListener('click', flipCard));
